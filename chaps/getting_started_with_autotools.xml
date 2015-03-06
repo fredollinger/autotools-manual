@@ -25,8 +25,72 @@
     <section>
 	<title> Initial Makefile.in  </title>
 
-    <para>Next, let's make our initial <filename>Makefile.in</filename>.
+    <para>Next, let's make our initial <filename>Makefile.in</filename>. Again, we'll make a useless, do nothing file
+    at first so we can getting a clearer picture of all the pieces:
     </para>
+
+    <para><programlisting linenumbering="numbered"><![CDATA[
+    package        = @PACKAGE_NAME@
+    SOURCES        = $(wildcard src/*.c)
+    srcdir         = @srcdir@
+    ]]></programlisting></para>
+
+    <para>Now edit <filename>configure.ac</filename> and add the following:</para>
+
+    <para><programlisting linenumbering="numbered"><![CDATA[
+    AC_CONFIG_FILES([Makefile]) # create top level Makefile from Makefile.in
+    ]]></programlisting></para>
+
+    <para>Thus, our new configure.ac looks like this:</para>
+
+    <para><programlisting linenumbering="numbered"><![CDATA[
+    AC_INIT([libmtd], [1.0]) # BOILERPLATE BEGIN: name of lib and the version
+    AC_CONFIG_FILES([Makefile]) # create top level Makefile from Makefile.in
+    AC_OUTPUT   # BOILERPLATE END
+    ]]></programlisting></para>
+
+    </section>
+
+    <section>
+	<title> Basic Functionality  </title>
+
+    <para>If it's a C or C++ library, we want to autodetect compiler or allow the user to specify it. Add the following to <filename>configure.ac</filename></para>
+
+    <para><programlisting linenumbering="numbered"><![CDATA[
+    AC_C_INLINE # Find C compiler (gcc)
+    ]]></programlisting></para>
+
+    <para>
+    Now add the compiler to the Makefile.in:
+    </para>
+
+    <para><programlisting linenumbering="numbered"><![CDATA[
+    CC  = @CC@
+    ]]></programlisting></para>
+
+    <para>Don't forget to rerun: </para>
+
+    <para><programlisting linenumbering="numbered"><![CDATA[
+    autoconf 
+    ./configure
+    ]]></programlisting></para>
+
+    <para>From now on, it will be assumed that each time you change 
+    <filename>configure.ac</filename> and want a new 
+    <filename>Makefile</filename>, you'll do the above.
+    </para>
+
+    <para>If we have C++, we need add this as well to <filename>configure.ac</filename></para>
+
+    <para><programlisting linenumbering="numbered"><![CDATA[
+    AC_LANG_CPLUSPLUS
+    ]]></programlisting></para>
+
+    <para>Instead of CC, we use CXX in our <filename>Makefile.in</filename></para>
+
+    <para><programlisting linenumbering="numbered"><![CDATA[
+    CXX = @CXX@
+    ]]></programlisting></para>
 
     </section>
 
