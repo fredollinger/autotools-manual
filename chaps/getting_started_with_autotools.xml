@@ -88,10 +88,91 @@
 
     <para>Instead of CC, we use CXX in our <filename>Makefile.in</filename></para>
 
-    <para><programlisting linenumbering="numbered"><![CDATA[
+    <para><programlisting><![CDATA[
     CXX = @CXX@
     ]]></programlisting></para>
 
+    <para>Now we need to compile the code. Add to <filename>Makefile.in</filename></para>
+
+    <para><programlisting><![CDATA[
+    .c.o:
+        $(CC) $(AM_CFLAGS) -c $< -o $@
+    ]]></programlisting></para>
+
+    <para>Note we need to get the AM_FLAGS. Add this to <filename>Makefile.in</filename></para>
+
+    <para><programlisting><![CDATA[
+    LIBDIR     = libs
+    INCLUDEDIR = include
+    CFLAGS     = @CFLAGS@ # user generated do not overwrite CFLAGS use AM_CFLAGS
+    LDFLAGS    = @LDFLAGS@ 
+    AM_CFLAGS  = -Wall -I$(INCLUDEDIR) -fPIC -fno-strict-aliasing -O2 -g -D_GNU_SOURCE $(CFLAGS)
+    ]]></programlisting></para>
+
+    <para>As the comment says, we don't want to add to <variable>CFLAGS</variable> because these will be overwritten. This is a good thing as it gives flexibility.</para>
+
+    <para><programlisting><![CDATA[
+    LIBDIR = libs
+    SOURCES = $(wildcard *.c)
+    OBJS = $(SOURCES:%.c=%.o)
+
+    TARGET_LINK = $(package).so
+    TARGET = $(TARGET_LINK).1.0.0
+
+    all: $(TARGET)
+
+    $(TARGET): $(OBJS)
+        mkdir -p $(LIBDIR)
+        $(CC) $(OBJS) $(AM_LDFLAGS) $(AM_CFLAGS) -o $(LIBDIR)/$(TARGET)
+    ]]></programlisting></para>
+
     </section>
+
+    <section>
+	<title> Autotools Summary </title>
+
+    <para>By now, we should have a working system that actually builds our library. Here's the <filename>Makefile.in</filename>:</para>
+
+    <para><programlisting><![CDATA[
+LIBDIR           = libs
+INCLUDEDIR       = include
+
+package        = @PACKAGE_NAME@
+srcdir         = @srcdir@
+CC             = @CC@
+CFLAGS         = @CFLAGS@  # user generated do not overwrite CFLAGS use AM_CFLAGS
+LDFLAGS        = @LDFLAGS@ # user generated do not overwrite LDFLAGS use AM_LDFLAGS. In this example none are needed.
+
+AM_CFLAGS = -Wall -I$(INCLUDEDIR) -fPIC -fno-strict-aliasing -O2 -g -D_GNU_SOURCE $(CFLAGS)
+AM_LDFLAGS = -shared -Wl,-soname,$(TARGET_LINK) -lpthread -ldl $(LDFLAGS)
+
+SOURCES        = $(wildcard src/*.c)
+OBJS           = $(SOURCES:%.c=%.o)
+
+TARGET_LINK = $(package).so
+TARGET = $(TARGET_LINK).1.0.0
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+    mkdir -p $(LIBDIR)
+    $(CC) $(OBJS) $(AM_LDFLAGS) $(AM_CFLAGS) -o $(LIBDIR)/$(TARGET)
+
+.c.o:
+    $(CC) $(AM_CFLAGS) -c $< -o $@
+    ]]></programlisting></para>
+
+    <para>Here's the <filename>configure.ac</filename>:</para>
+
+    <para><programlisting><![CDATA[
+AC_INIT([libmtd], [1.0]) # BOILERPLATE BEGIN: name of lib and the version
+AC_C_INLINE # Find C compiler (gcc)
+AC_CONFIG_FILES([Makefile]) # create top level Makefile from Makefile.in
+AC_OUTPUT   # BOILERPLATE END
+    ]]></programlisting></para>
+
+    </section>
+
+
 
 </chapter>

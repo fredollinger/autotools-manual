@@ -21,5 +21,6 @@
 
 </bookinfo>
 	<xi:include href="chaps/getting_started_with_autotools.xml" />
+	<xi:include href="chaps/adding_targets.xml" />
 	<xi:include href="chaps/pkgconfig.xml" />
 </book>

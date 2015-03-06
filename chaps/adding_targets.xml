@@ -1,0 +1,50 @@
+<?xml version="1.0"?> <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [ ]>
+<chapter xmlns:xi="http://www.w3.org/2001/XInclude" id="adding_targets">
+	<title>Adding Targets</title>
+    <para>
+    Now that we have a basic format, we can add more targets.
+    </para>
+
+    <section>
+	<title>Clean Targets</title>
+    <para>
+    Let's add some clean targets to the <filename>Makefile.in</filename>
+    </para>
+
+    <para><programlisting linenumbering="numbered"><![CDATA[
+    clean:
+        rm -rf $(OBJS) libs *.pc 
+
+    distclean: clean
+        rm -rf autom4te.cache config.log config.status Makefile build ltmain.sh m4 aclocal.m4
+
+    cleanall: distclean
+        rm -f configure
+    ]]></programlisting></para>
+
+    <para>The first, clean, target will clearly clean out the object files, the finished library as well as the pkgconfig file which we'll get to. This is a normal Makefile clean.</para>
+
+    <para>The second target, distclean, gets rid of all the junk that autoconf creates. This will restore the directory to the state in which it was checked into verion control. It will get on to the unconfigured state.</para>
+
+    <para>The last one gets rid of the configure in case one wanted to go back to just the human generated files. This is for maintainers, only. (I didn't call it maintainer-clean because it's too much typing.</para>
+
+    </section>
+
+    <section>
+	<title>Install Target</title>
+    <para>No good if we don't get the files where they need to be</para>
+
+    <para><programlisting linenumbering="numbered"><![CDATA[
+
+    HEADERS = $(INCLUDEDIR)/$(package).h
+
+    install:
+        mkdir -p $(DESTDIR)$(libdir)
+        mkdir -p $(DESTDIR)$(includedir)/$(package)
+
+        $(VERBOSE) install -m 755 $(LIBDIR)/* $(DESTDIR)$(libdir)
+        $(VERBOSE) install -m 644 $(HEADERS) $(DESTDIR)$(includedir)/$(package)
+    ]]></programlisting></para>
+    </section>
+
+</chapter>
