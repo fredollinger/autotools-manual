@@ -1,7 +1,33 @@
 <?xml version="1.0"?> <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [ ]>
 <chapter xmlns:xi="http://www.w3.org/2001/XInclude" id="getting_started_with_autotools">
 	<title>Getting Started With Autotools</title>
+    <section>
+	<title> Initial configure.ac  </title>
     <para>
-    Getting started.
+        In the top level of your project, create the simplest <filename>configure.ac</filename>. This file will eventually be turned into our <filename>configure</filename> file by <application>autoconf</application>.
     </para>
+    <para><programlisting linenumbering="numbered"><![CDATA[
+    AC_INIT([libabc], [1.0]) # BOILERPLATE BEGIN: name of lib and the version
+    AC_OUTPUT   # BOILERPLATE END
+    ]]></programlisting></para>
+
+    <para>
+    Note: this is the simplest example. But it does nothing. We can transform it to a do nothing <filename>configure</filename> and test it:
+    </para>
+
+    <para><programlisting linenumbering="numbered"><![CDATA[
+    autoconf 
+    ./configure
+    ]]></programlisting></para>
+
+    </section>
+
+    <section>
+	<title> Initial Makefile.in  </title>
+
+    <para>Next, let's make our initial <filename>Makefile.in</filename>.
+    </para>
+
+    </section>
+
 </chapter>
