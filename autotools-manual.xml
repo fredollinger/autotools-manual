@@ -1,0 +1,25 @@
+<?xml version="1.0"?> <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [ ]>
+<book xmlns:xi="http://www.w3.org/2001/XInclude" id="csx_test_protocol">
+<bookinfo>
+	<title>CSX Software Test Protocol</title>
+	<authorgroup>
+	<author>
+		<firstname>Frederick</firstname><surname>Ollinger</surname>
+		<contrib>Autotools Manual</contrib>
+	</author>
+	</authorgroup>
+
+	<revhistory>
+		<revision>
+			<revnumber>0.0.1</revnumber>
+			<date>2015.03.06</date>
+			<authorinitials>kmc</authorinitials>
+			<revmark>Original Public Release</revmark>
+			<revdescription>Initial Version</revdescription>
+		</revision>
+	</revhistory>
+
+</bookinfo>
+	<xi:include href="chaps/getting_started_with_autotools.xml" />
+	<xi:include href="chaps/pkgconfig.xml" />
+</book>
