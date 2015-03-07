@@ -47,4 +47,42 @@
     ]]></programlisting></para>
     </section>
 
+    <section>
+    <title>Adding Versioning Information</title>
+    <para>
+    This is going to come up later so we might as well add it now to the <filename>configure.ac</filename>:
+    </para>
+
+    <para><programlisting linenumbering="numbered"><![CDATA[
+    m4_define([package_version_major],[1])
+    m4_define([package_version_minor],[0])
+    m4_define([package_version_micro],[0])
+    m4_define([api_version],[package_version_major])
+    AC_SUBST([PACKAGE_VERSION_MAJOR],package_version_major)
+    AC_SUBST([PACKAGE_VERSION_MINOR],package_version_minor)
+    AC_SUBST([PACKAGE_VERSION_MICRO],package_version_micro)
+    AC_SUBST([API_VERSION],api_version)
+    ]]></programlisting></para>
+
+    <para>Note that our api version is the same as our major version. This is by design.</para>
+
+    <para>For those who are keeping up, our <filename>configure.ac</filename> is now:</para>
+
+    <para><programlisting linenumbering="numbered"><![CDATA[
+AC_INIT([libmtd], [1.0]) # BOILERPLATE BEGIN: name of lib and the version
+m4_define([package_version_major],[1])
+m4_define([package_version_minor],[0])
+m4_define([package_version_micro],[0])
+m4_define([api_version],[1])
+AC_SUBST([PACKAGE_VERSION_MAJOR],package_version_major)
+AC_SUBST([PACKAGE_VERSION_MINOR],package_version_minor)
+AC_SUBST([PACKAGE_VERSION_MICRO],package_version_micro)
+AC_SUBST([API_VERSION],api_version)
+AC_C_INLINE # Find C compiler (gcc)
+AC_CONFIG_FILES([Makefile]) # create top level Makefile from Makefile.in
+AC_OUTPUT   # BOILERPLATE END
+    ]]></programlisting></para>
+    
+    </section>
+
 </chapter>

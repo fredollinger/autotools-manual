@@ -2,6 +2,55 @@
 <chapter xmlns:xi="http://www.w3.org/2001/XInclude" id="pkgconfig">
 	<title>Pkg-config</title>
     <para>
-    What of it?
+    Pkg-config is a system where shared libraries will let us know all the information we need in order to build applications against them. Autotools can help us make them by dynamically filling in information.
     </para>
+
+    <section>
+    <title>
+    The pkg-config Template File
+    </title>
+    <para>
+    First we need a basic pkg-config file: <filename>libabc.pc.in</filename>. The extention .in does imply that this is a file which will be used as a template to autogenerate our <filename>libabc.pc</filename>.
+    </para>
+    </section>
+
+    <section>
+    <title>
+    The pkg-config Template File
+    </title>
+    <para>The first line is boilerplate stuff to get started. It ensures that the machinery for pkg-config is part of the build system</para>
+
+    <para><programlisting><![CDATA[
+PKG_PROG_PKG_CONFIG # PKG-CONFIG BOILERPLATE
+    ]]></programlisting></para>
+
+    <para>PKG_INSTALLDIR allows the user user to override the ordinary path for where the pkg-config file will be installed.</para>
+
+    <para><programlisting><![CDATA[
+PKG_INSTALLDIR
+    ]]></programlisting></para>
+
+    <para>Finally, we need to transform our file. This is where version and package name information comes into play. Note that this expects us to have <filename>libabc.pc.in</filename> in the top level directory:
+    </para>
+
+    <para><programlisting><![CDATA[
+AC_CONFIG_FILES([$PACKAGE_NAME-$API_VERSION.pc:$PACKAGE_NAME.pc.in ],[], [API_VERSION='$API_VERSION'])
+    ]]></programlisting></para>
+
+    <para>Now we can consume the information that we get. Add this to the <filename>Makefile.in</filename>
+
+    <para><programlisting><![CDATA[
+    pgkconfigdir = @pkgconfigdir@
+    ]]></programlisting></para>
+
+    <para>Now we can modify the install rule with the following:</para>
+
+    <para><programlisting><![CDATA[
+
+    ]]></programlisting></para>
+    install:
+        mkdir -p $(DESTDIR)$(pkgconfigdir)
+        $(VERBOSE) install -m 644 *.pc $(DESTDIR)$(pkgconfigdir)
+    </section>
+
 </chapter>
