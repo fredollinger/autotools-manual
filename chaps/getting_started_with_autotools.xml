@@ -54,7 +54,7 @@
     <section>
 	<title> Basic Functionality  </title>
 
-    <para>If it's a C or C++ library, we want to autodetect compiler or allow the user to specify it. Add the following to <filename>configure.ac</filename></para>
+    <para>If it's a C library, we want to autodetect compiler or allow the user to specify it. Add the following to <filename>configure.ac</filename></para>
 
     <para><programlisting linenumbering="numbered"><![CDATA[
     AC_C_INLINE # Find C compiler (gcc)
@@ -68,6 +68,18 @@
     CC  = @CC@
     ]]></programlisting></para>
 
+    <para>For C++ do this. Note AC_PROG_CC is necessary so that CFLAGS is set and we can't live without CFLAGS.</para>
+    <para><programlisting><![CDATA[
+    AC_PROG_CC
+    AC_PROG_CXX
+    ]]></programlisting></para>
+
+    <para>Instead of CC, we use CXX in our <filename>Makefile.in</filename></para>
+
+    <para><programlisting><![CDATA[
+    CXX = @CXX@
+    ]]></programlisting></para>
+
     <para>Don't forget to rerun: </para>
 
     <para><programlisting linenumbering="numbered"><![CDATA[
@@ -79,18 +91,6 @@
     <filename>configure.ac</filename> and want a new 
     <filename>Makefile</filename>, you'll do the above.
     </para>
-
-    <para>If we have C++, we need add this as well to <filename>configure.ac</filename></para>
-
-    <para><programlisting linenumbering="numbered"><![CDATA[
-    AC_LANG_CPLUSPLUS
-    ]]></programlisting></para>
-
-    <para>Instead of CC, we use CXX in our <filename>Makefile.in</filename></para>
-
-    <para><programlisting><![CDATA[
-    CXX = @CXX@
-    ]]></programlisting></para>
 
     <para>Now we need to compile the code. Add to <filename>Makefile.in</filename></para>
 
